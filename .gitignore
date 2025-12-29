@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Logs
+*.log
+*.log.old
+detection_server.log
+detection_server.log.old
+
+# Model files (not included in repository)
+logs/*.pt
+logs/*.pth
+logs/*.onnx
+logs/*.engine
+
+# Exclude directory (development files not for public)
+exclude/
+logs1/
+
+# YOLO runs
+runs/
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Test outputs
+test_output/
+response_*.json
+
+# System files
+desktop.ini
+.directory

@@ -1,0 +1,40 @@
+{
+    "CLASS_MAPPING": {
+        "圆筛藻-海链藻(齐)": 0,
+        "冠盘藻": 1,
+        "小环藻-碟星藻(齐)": 2,
+        "直链藻-沟链藻(齐)": 3,
+        "等片藻": 4,
+        "平板藻-星杆藻": 5,
+        "脆杆藻-针杆藻(齐)": 6,
+        "卵形藻": 7,
+        "曲壳藻": 8,
+        "短缝藻": 9,
+        "舟形藻": 10,
+        "双壁藻": 11,
+        "布纹藻": 12,
+        "桥弯藻(齐)": 13,
+        "双眉藻": 14,
+        "异极藻(齐)": 15,
+        "窗纹藻": 16,
+        "菱形藻-菱板藻(齐)": 17,
+        "盘杆藻": 18,
+        "双菱藻(齐)": 19,
+        "波缘藻": 20,
+        "棍形藻": 21,
+        "羽纹藻": 22
+    },
+    "predict_config": {
+        "iou": 0.3,
+        "conf": 0.21,
+        "batch": 1
+    },
+    "server_config": {
+        "filt_and_delete_invalid_content": true,
+        "check_and_delete_residual_tmp": true,
+        "valid_img_ext": [".jpg", ".png", ".jpeg", ".tif", ".tiff", ".bmp", ".webp"],
+        "dev_log_mode": false,
+        "save_every_json_result": false,
+        "default_font_path": "logs/SimHei.ttf"
+    }
+}
