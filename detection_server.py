@@ -286,10 +286,13 @@ def convert_to_jpg(image_path, output_dir):
                             process_image(entry.path, output_dir, entry.name)
     return output_dir, filename_mapping
 
-def process_low_scale(source_path, output_require, class_list, conf, iou, batch_size, is_base64_input=False):
+def process_low_scale(source_path, output_require, class_list, conf, iou, batch_size, imgsz, half, rect, max_det, augment, is_base64_input=False):
     """Handles low-scale object detection with streaming."""
-    # 仅仅用于高精度的7类模型进行测试时使用, 临时覆盖class_list.
-    # class_list = ['沟链藻', '圆筛藻', '舟形藻', '小环藻', '双眉藻', '异极藻', '菱形藻']
+    # 当use_high_fidelity_model为true时, 使用专门的高精度但是类别数量更少的专用模型对困难类别进行专门的检测, 测试人员会保证启动服务器时, config.json以及模型权重都是配套的高精度模型的配置. 这是测试人员的一个临时需求, 在正式项目中不应该被使用, 这点由模型调用者保证.
+    use_high_fidelity_model = SERVER_CONFIG.get('use_high_fidelity_model', False)
+    high_fidelity_model_classes = SERVER_CONFIG.get('high_fidelity_model_classes', ['沟链藻', '圆筛藻', '舟形藻', '小环藻', '双眉藻', '异极藻', '菱形藻'])
+    if use_high_fidelity_model:
+        class_list = high_fidelity_model_classes
     save_folder = output_require.get('save_folder')
     no_local_save = output_require.get('no_local_save', False)
     no_response_save = output_require.get('no_response_save', False)
@@ -344,6 +347,11 @@ def process_low_scale(source_path, output_require, class_list, conf, iou, batch_
                 iou=iou, 
                 conf=conf, 
                 batch=batch_size,
+                imgsz=imgsz,
+                half=half,
+                rect=rect,
+                max_det=max_det,
+                augment=augment,
                 device=DEVICE,
                 stream=True,  # Enable streaming for memory efficiency
                 verbose=verbose  # Control YOLO logging
@@ -729,6 +737,11 @@ def detection_endpoint():
     # --- Config ---
     conf = config_override.get("predict_config", {}).get("conf", PREDICT_CONFIG['conf'])
     iou = config_override.get("predict_config", {}).get("iou", PREDICT_CONFIG['iou'])
+    imgsz = config_override.get("predict_config", {}).get("imgsz", PREDICT_CONFIG['imgsz'])
+    half = config_override.get("predict_config", {}).get("half", PREDICT_CONFIG['half'])
+    rect = config_override.get("predict_config", {}).get("rect", PREDICT_CONFIG['rect'])
+    augment = config_override.get("predict_config", {}).get("augment", PREDICT_CONFIG['augment'])
+    max_det = config_override.get("predict_config", {}).get("max_det", PREDICT_CONFIG['max_det'])
     requested_batch = config_override.get("predict_config", {}).get("batch", PREDICT_CONFIG.get('batch', 1))
     batch_size = calculate_optimal_batch_size(requested_batch)
     class_mapping = config_override.get("CLASS_MAPPING", CLASS_MAPPING)
@@ -847,7 +860,7 @@ def detection_endpoint():
         if scale == 'low':
             # Direct YOLO processing for folder (fastest)
             class_list = {value: key for key, value in class_mapping.items()}
-            json_results, rendered_images = process_low_scale(input_source, output_require, class_list, conf, iou, batch_size, is_base64_input)
+            json_results, rendered_images = process_low_scale(input_source, output_require, class_list, conf, iou, batch_size, imgsz, half, rect, max_det, augment, is_base64_input)
             
         elif scale == 'high':
             # High-scale needs standard conversion still

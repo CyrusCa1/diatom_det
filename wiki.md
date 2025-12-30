@@ -36,7 +36,12 @@ detECT_SERVER.EXE --port 5000
     "predict_config": {
         "iou": 0.3,
         "conf": 0.21,
-        "batch": 1
+        "batch": 1,
+        "imgsz": 1024,
+        "half": true,
+        "rect": true,
+        "augment": false,
+        "max_det": 300
     },
     "server_config": {
         "filt_and_delete_invalid_content": true,
@@ -44,7 +49,9 @@ detECT_SERVER.EXE --port 5000
         "valid_img_ext": [".jpg", ".png", ".jpeg", ".tif", ".tiff", ".bmp", ".webp"],
         "dev_log_mode": false,
         "save_every_json_result": false,
-        "default_font_path": "logs/SimHei.ttf"
+        "default_font_path": "logs/SimHei.ttf",
+        "use_high_fidelity_model": false,
+        "high_fidelity_model_classes": ["沟链藻", "圆筛藻", "舟形藻", "小环藻", "双眉藻", "异极藻", "菱形藻"]
     }
 }
 ```
@@ -60,6 +67,8 @@ detECT_SERVER.EXE --port 5000
   - `dev_log_mode`: 是否启用开发者日志模式, 关闭后服务器将使用更加美观的控制台输出方式, 建议设为 `false`。
   - `save_every_json_result`: 是否保存每个请求的JSON结果, 建议设为为 `false`, 因为模型的检测速度甚至与磁盘io速度相当, 如果大规模输入场景下开启此功能将严重拖慢服务器运行速度。
   - `default_font_path`: 默认的字体文件路径, 默认为 `logs/SimHei.ttf`。用户可以自行使用其他的字体文件路径, 服务器会自行检查该文件路径是否正确且是否支持中文显示, 如果不支持, 服务器会自动查找本机字体作为默认字体。
+  - `use_high_fidelity_model`: 这是一个临时的测试用逻辑, 当此字段为true时, 低倍模型将使用高精度模型的类别进行映射, 但是检测时使用的权重文件必须由于为高精度模型, 作为临时的行为, 服务器不会进行模型权重文件是否为正确的高精度模型的检查, 需要测试人员自行保证。
+  - `high_fidelity_model_classes`: 高精度模型所使用的类别映射。
 
 注意: 上述配置文件仅在服务器初始化时加载, 如果需要更改配置文件, 请修改该文件并重新启动服务器。
 

@@ -27,7 +27,13 @@
     "predict_config": {
         "iou": 0.3,
         "conf": 0.21,
-        "batch": 1
+        "batch": 1,
+        "imgsz": 1024,
+
+        "half": true,
+        "rect": true,
+        "augment": false,
+        "max_det": 300
     },
     "server_config": {
         "filt_and_delete_invalid_content": true,
@@ -35,6 +41,8 @@
         "valid_img_ext": [".jpg", ".png", ".jpeg", ".tif", ".tiff", ".bmp", ".webp"],
         "dev_log_mode": false,
         "save_every_json_result": false,
-        "default_font_path": "logs/SimHei.ttf"
+        "default_font_path": "logs/SimHei.ttf",
+        "use_high_fidelity_model": false,
+        "high_fidelity_model_classes": ["沟链藻", "圆筛藻", "舟形藻", "小环藻", "双眉藻", "异极藻", "菱形藻"]
     }
 }
