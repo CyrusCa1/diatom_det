@@ -27,6 +27,7 @@
 ## 环境要求
 
 ### Python 版本
+
 - Python 3.10.14
 
 ### 主要依赖
@@ -45,7 +46,7 @@ tqdm==4.66.5
 imageio==2.35.1
 ```
 
-完整的环境依赖请参考 `yolov8_env_backup.txt`。
+完整的环境依赖请参考 `conda_env.txt`。
 
 ### 硬件要求
 
@@ -151,6 +152,7 @@ pyinstaller --name detection_server --onedir --add-data "logs;logs" --add-binary
 ```
 
 **注意事项：**
+
 - 请根据你的实际环境修改 `--add-binary` 路径
 - 打包后的可执行文件位于 `dist/detection_server/` 目录
 - 确保 `logs/` 目录及其内容（模型文件、配置文件）与可执行文件在同一目录
