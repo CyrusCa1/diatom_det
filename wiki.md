@@ -61,6 +61,8 @@ detECT_SERVER.EXE --port 5000
 - `CLASS_MAPPING`: 模型所使用的类别映射, **此参数允许用户通过请求体覆盖.** 。
 - `predict_config`: 模型预测的配置参数, **此参数允许用户通过请求体覆盖.** 当请求体中没有此字段, 则使用此文件中定义的默认值。
 - `server_config`: 服务器的配置参数。
+  - `high_scale_model_type`: 高倍分类模型的骨干网络类型，可选值：`mobilenetv2`、`resnet18`、`resnet34`、`resnet50`、`resnet101`、`resnet152`、`vgg11`、`vgg13`、`vgg16`、`vgg11_bn`、`vgg13_bn`、`vgg16_bn`、`vit_b_16`、`swin_transformer_tiny`、`swin_transformer_small`、`swin_transformer_base`。默认为 `resnet50`。**注意：高倍模型会自动使用与低倍模型相同的设备（GPU/CPU）。**
+  - `high_scale_input_shape`: 高倍模型所使用Resize大小, 默认为[512, 512].
   - `check_and_delete_residual_tmp`: 是否在服务器每次启动时, 检查是否有残留的缓存文件或文件夹, 并删除这些文件或文件夹。
   - `filt_and_delete_invalid_content`: 当请求方式是文件夹时, 是否对所请求的文件夹按照 `valid_img_ext`白名单进行过滤, 并删除白名单外的文件, 服务器使用直接删除而非过滤非法内容的方式, 是为了极致地加快检测速度, 避免dataloader初始化输入列表带来的大量时间开销。**所以注意: 强烈建议开启此功能, 避免模型对文件夹中非图片文件进行检测, 并且服务器将会删除非白名单的文件/目录, 请务将无关的重要文件保存在请求检测的目录中, 正常请求过程中也不应该请求非法内容。总之当开启此功能时, 前端程序需要为数据安全负责。**
   - `valid_img_ext`: 白名单, 即允许处理的图像文件扩展名。

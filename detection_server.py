@@ -608,6 +608,8 @@ def setup():
     CLASS_MAPPING = DEFAULT_CONFIG["CLASS_MAPPING"]
     PREDICT_CONFIG = DEFAULT_CONFIG["predict_config"]
     SERVER_CONFIG = DEFAULT_CONFIG.get("server_config", {
+        "high_scale_model_type": "resnet50",
+        "high_scale_input_shape": [512, 512],
         "filt_and_delete_invalid_content": True,
         "check_and_delete_residual_tmp": True,
         "valid_img_ext": [".jpg", ".png", ".jpeg", ".tif", ".tiff", ".bmp", ".webp"],
@@ -644,8 +646,22 @@ def setup():
     # High-scale model loading
     high_scale_model_path = os.path.join(base_path, 'logs', 'high_scale.pth')
     print(f"Loading high-scale model from: {high_scale_model_path}")
-    HIGH_SCALE_CLASSIFIER = HighScaleClassification(model_path=high_scale_model_path, class_mapping=CLASS_MAPPING)
-    print("High-scale model loaded.")
+    
+    # Get backbone from config, default to resnet50
+    backbone = SERVER_CONFIG.get('high_scale_model_type', 'resnet50')
+    input_shape = SERVER_CONFIG.get('high_scale_input_shape', [512, 512])
+    
+    # Determine if CUDA should be used based on detected device
+    use_cuda = (DEVICE == 'cuda')
+    
+    HIGH_SCALE_CLASSIFIER = HighScaleClassification(
+        model_path=high_scale_model_path, 
+        class_mapping=CLASS_MAPPING,
+        backbone=backbone,
+        cuda=use_cuda,
+        input_shape=input_shape
+    )
+    print(f"High-scale model loaded. Backbone: {backbone}, Device: {'CUDA' if use_cuda else 'CPU'}")
 
     # Font loading
     font_path_cfg = SERVER_CONFIG.get('default_font_path')

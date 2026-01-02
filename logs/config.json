@@ -36,6 +36,8 @@
         "max_det": 300
     },
     "server_config": {
+        "high_scale_model_type": "resnet50",
+        "high_scale_input_shape": [512, 512],
         "filt_and_delete_invalid_content": true,
         "check_and_delete_residual_tmp": true,
         "valid_img_ext": [".jpg", ".png", ".jpeg", ".tif", ".tiff", ".bmp", ".webp"],
